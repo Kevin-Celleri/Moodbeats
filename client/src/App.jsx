@@ -4,6 +4,7 @@ function App() {
   const [selectedMood, setSelectedMood] = useState('')
   const [savedPlaylists, setSavedPlaylists] = useState([])
   const [backendPlaylists, setBackendPlaylists] = useState([])
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
   
@@ -16,13 +17,15 @@ function App() {
 
   const getSpotifyPlaylists = (mood) => {
     setSelectedMood(mood)
-  
+    setLoading(true)
     fetch(`http://localhost:5050/spotify-search/${mood}`)
       .then((response) => response.json())
       .then((data) => {
         setBackendPlaylists(data.filter((playlist) => playlist !== null))
+        setLoading(false)
       })  .catch((error) => {
         console.log(error)
+        setLoading(false)
       })
   }
 
