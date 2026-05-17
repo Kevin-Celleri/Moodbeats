@@ -11,6 +11,10 @@ Moodbeats is a full-stack web app that recommends Spotify playlists based on a u
 - Open playlists directly in Spotify
 - Responsive UI
 
+## 
+Frontend: https://moodbeats-sdup.onrender.com
+Backend: https://moodbeats-6k2i.onrender.com
+
 ## Tech Stack
 
 Frontend:
