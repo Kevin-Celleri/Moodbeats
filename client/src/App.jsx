@@ -8,7 +8,7 @@ function App() {
 
   useEffect(() => {
   
-    fetch('http://localhost:5050/saved-playlists')
+    fetch('https://moodbeats-6k2i.onrender.com/saved-playlists')
       .then((response) => response.json())
       .then((data) => {
         setSavedPlaylists(data)
@@ -18,7 +18,7 @@ function App() {
   const getSpotifyPlaylists = (mood) => {
     setSelectedMood(mood)
     setLoading(true)
-    fetch(`http://localhost:5050/spotify-search/${mood}`)
+    fetch(`https://moodbeats-6k2i.onrender.com/spotify-search/${mood}`)
       .then((response) => response.json())
       .then((data) => {
         setBackendPlaylists(data.filter((playlist) => playlist !== null))
@@ -71,7 +71,7 @@ function App() {
                       return
                     }
 
-                    fetch('http://localhost:5050/saved-playlists', {
+                    fetch('https://moodbeats-6k2i.onrender.com/saved-playlists', {
                       method: 'POST',
                       headers: {
                         'Content-Type': 'application/json',
@@ -108,7 +108,7 @@ function App() {
           <h4>{playlist.name}</h4>
           <button
             onClick={() => {
-              fetch(`http://localhost:5050/saved-playlists/${playlist.id}`, {
+              fetch(`https://moodbeats-6k2i.onrender.com/saved-playlists/${playlist.id}`, {
                 method: 'DELETE',
               }).then(() => {
                 setSavedPlaylists(
@@ -126,7 +126,7 @@ function App() {
                 return
               }
 
-              fetch(`http://localhost:5050/saved-playlists/${playlist.id}`, {
+              fetch(`https://moodbeats-6k2i.onrender.com/saved-playlists/${playlist.id}`, {
                 method: 'PUT',
                 headers: {
                   'Content-Type': 'application/json',
