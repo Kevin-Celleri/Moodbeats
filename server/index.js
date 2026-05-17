@@ -42,69 +42,66 @@ app.get('/create-table', async (req, res) => {
       console.log(error)
       res.status(500).send('Error creating table')
     }
-  })
+})
 
-  app.get('/create-saved-table', async (req, res) => {
-    try {
-      await pool.query(`
-        CREATE TABLE IF NOT EXISTS saved_playlists (
-          id SERIAL PRIMARY KEY,
-          name TEXT,
-          mood TEXT,
-          image TEXT
-        )
-      `)
-  
-      res.send('Saved playlists table created')
-    } catch (error) {
-      console.log(error)
-      res.status(500).send('Error creating saved playlists table')
-    }
-  })
-  
-  app.post('/saved-playlists', async (req, res) => {
-    try {
-      const { name, mood, image } = req.body
-  
-      const result = await pool.query(
-        'INSERT INTO saved_playlists (name, mood, image) VALUES ($1, $2, $3) RETURNING *',
-        [name, mood, image]
+app.get('/create-saved-table', async (req, res) => {
+  try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS saved_playlists (
+        id SERIAL PRIMARY KEY,
+        name TEXT,
+        mood TEXT,
+        image TEXT
       )
+    `)
   
-      res.json(result.rows[0])
-    } catch (error) {
+    res.send('Saved playlists table created')
+  } catch (error) {
+    console.log(error)
+    res.status(500).send('Error creating saved playlists table')
+  }
+})
+  
+app.post('/saved-playlists', async (req, res) => {
+  try {
+    const { name, mood, image } = req.body
+  
+    const result = await pool.query(
+      'INSERT INTO saved_playlists (name, mood, image) VALUES ($1, $2, $3) RETURNING *', [name, mood, image]
+    )
+  
+    res.json(result.rows[0])
+  } catch (error) {
       console.log(error)
       res.status(500).send('Error saving playlist')
-    }
-  })
+  }
+})
 
-  app.get('/saved-playlists', async (req, res) => {
-    try {
-      const result = await pool.query(
-        'SELECT DISTINCT ON (name) * FROM saved_playlists ORDER BY name, id'
-      )
+app.get('/saved-playlists', async (req, res) => {
+  try {
+    const result = await pool.query(
+      'SELECT DISTINCT ON (name) * FROM saved_playlists ORDER BY name, id'
+    )
   
-      res.json(result.rows)
-    } catch (error) {
+    res.json(result.rows)
+  } catch (error) {
+    console.log(error)
+    res.status(500).send('Error getting saved playlists')
+  }
+})
+
+app.delete('/saved-playlists/:id', async (req, res) => {
+  try {
+    const { id } = req.params
+
+    await pool.query(
+      'DELETE FROM saved_playlists WHERE id = $1', [id])
+
+      res.send('Playlist deleted')
+  } catch (error) {
       console.log(error)
-      res.status(500).send('Error getting saved playlists')
-    }
-  })
-
-  app.delete('/saved-playlists/:id', async (req, res) => {
-    try {
-        const { id } = req.params
-
-        await pool.query(
-        'DELETE FROM saved_playlists WHERE id = $1',
-        [id]
-        )
-
-        res.send('Playlist deleted')
-    } catch (error) {
-        console.log(error)
-        res.status(500).send('Error deleting playlist')
-    }
+      res.status(500).send('Error deleting playlist')
+  }
 })
 
 app.get('/spotify-token', async (req, res) => {
@@ -135,6 +132,7 @@ app.get('/spotify-token', async (req, res) => {
     res.status(500).send('Error getting Spotify token')
   }
 })
+
 app.get('/spotify-search/:mood', async (req, res) => {
   try {
     const { mood } = req.params
@@ -174,8 +172,8 @@ app.get('/spotify-search/:mood', async (req, res) => {
   }
 })
 
-  app.get('/seed-playlists', async (req, res) => {
-    try {
+app.get('/seed-playlists', async (req, res) => {
+  try {
       await pool.query(`
         INSERT INTO playlists (name, mood, image)
         VALUES
@@ -191,7 +189,7 @@ app.get('/spotify-search/:mood', async (req, res) => {
         ),
         (
           'Late Night Chill',
-          'Chill',
+          'Chill',s
           'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4'
         ),
         (
