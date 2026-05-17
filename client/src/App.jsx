@@ -45,6 +45,8 @@ function App() {
         <div>
           <h3>{selectedMood} Playlists</h3>
 
+          {loading && <p>Loading playlists...</p>}
+
           <div className="playlist-grid">
             {backendPlaylists.map((playlist) => (
               <div className="playlist-card" key={playlist.id || playlist.name}>
