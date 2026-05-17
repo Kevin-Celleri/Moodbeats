@@ -21,6 +21,8 @@ function App() {
       .then((response) => response.json())
       .then((data) => {
         setBackendPlaylists(data.filter((playlist) => playlist !== null))
+      })  .catch((error) => {
+        console.log(error)
       })
   }
 
