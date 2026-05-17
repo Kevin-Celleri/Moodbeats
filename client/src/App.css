@@ -194,3 +194,11 @@ button:hover {
   object-fit: cover;
   border-radius: 12px;
 }
+
+.playlist-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 20px;
+}
