@@ -104,6 +104,23 @@ app.delete('/saved-playlists/:id', async (req, res) => {
   }
 })
 
+app.put('/saved-playlists/:id', async (req, res) => {
+  try {
+    const { id } = req.params
+    const { name } = req.body
+
+    const updatedPlaylist = await pool.query(
+      'UPDATE saved_playlists SET name = $1 WHERE id = $2 RETURNING *',
+      [name, id]
+    )
+
+    res.json(updatedPlaylist.rows[0])
+  } catch (error) {
+    console.log(error)
+    res.status(500).send('Error updating playlist')
+  }
+})
+
 app.get('/spotify-token', async (req, res) => {
   try {
     const response = await fetch(

@@ -55,22 +55,18 @@ function App() {
                 alt={playlist.name}
               />
 
-                <h4>{playlist.name}</h4>
-                <a
-                  href={playlist.external_urls.spotify}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <button>Open in Spotify</button>
-                </a>
+              <h4>{playlist.name}</h4>
+              <a
+                href={playlist.external_urls.spotify}
+                target="_blank"
+                rel="noreferrer"
+              >
+              <button>Open in Spotify</button>
+              </a>
 
-                <button
-                  onClick={() => {
-
-                    const alreadySaved = savedPlaylists.some(
-                      (item) => item.name === playlist.name
-                    )
-
+              <button
+                onClick={() => {
+                  const alreadySaved = savedPlaylists.some((item) => item.name === playlist.name)
                     if (alreadySaved) {
                       return
                     }
@@ -86,17 +82,12 @@ function App() {
                         image: playlist.images?.[0]?.url,
                       }),
                     })
-                      .then((response) => response.json())
-                      .then((data) => {
-                        setSavedPlaylists([
-                          ...savedPlaylists,
-                          data,
-                        ])
-                      })
+                    .then((response) => response.json())
+                    .then((data) => { setSavedPlaylists([...savedPlaylists,data,])
+                    
+                    })
                   }}
-                >
-                  Save Playlist
-                </button>
+                >Save Playlist</button>
               </div>
             ))}
           </div>
@@ -107,7 +98,8 @@ function App() {
 
       <div className="playlist-grid">
       {savedPlaylists.map((playlist) => (
-        <div className="playlist-card" key={playlist.id || playlist.name}>          <img
+        <div className="playlist-card" key={playlist.id || playlist.name}>
+          <img
             src={playlist.image}
             alt={playlist.name}
             width="200"
@@ -115,18 +107,44 @@ function App() {
 
           <h4>{playlist.name}</h4>
           <button
-          onClick={() => {
-            fetch(`http://localhost:5050/saved-playlists/${playlist.id}`, {
-              method: 'DELETE',
-            }).then(() => {
-              setSavedPlaylists(
-                savedPlaylists.filter((item) => item.id !== playlist.id)
-              )
-            })
-          }}
-        >
-          Delete
-        </button>
+            onClick={() => {
+              fetch(`http://localhost:5050/saved-playlists/${playlist.id}`, {
+                method: 'DELETE',
+              }).then(() => {
+                setSavedPlaylists(
+                  savedPlaylists.filter((item) => item.id !== playlist.id)
+                )
+              })
+            }}
+          > Delete </button>
+
+          <button
+            onClick={() => {
+              const newName = window.prompt('Enter new playlist name')
+
+              if (!newName) {
+                return
+              }
+
+              fetch(`http://localhost:5050/saved-playlists/${playlist.id}`, {
+                method: 'PUT',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  name: newName,
+                }),
+              })
+                .then((response) => response.json())
+                .then((updatedPlaylist) => {
+                  setSavedPlaylists(
+                    savedPlaylists.map((item) =>
+                      item.id === playlist.id ? updatedPlaylist : item
+                    )
+                  )
+                })
+            }}
+          > Rename </button>
         </div>
       ))}
     </div>
