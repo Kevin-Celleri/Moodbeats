@@ -1,0 +1,44 @@
+body {
+  margin: 20px;
+  background-color: #121212;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+button {
+  margin: 6px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  margin: 10px 0;
+  font-size: 18px;
+}
+
+img {
+  width: 220px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+.playlist-grid {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.playlist-card {
+  background-color: #1f1f1f;
+  padding: 16px;
+  border-radius: 18px;
+  width: 220px;
+}
